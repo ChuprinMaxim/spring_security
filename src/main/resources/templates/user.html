@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Add/update user</title>
+</head>
+<body>
+<div sec:authorize="isAuthenticated()">
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Выйти</button>
+    </form>
+</div>
+<br><br>
+<table border="3">
+    <tr>
+        <th>Имя</th>
+        <th>Фамилия</th>
+        <th>Отдел</th>
+        <th>ЗП</th>
+        <th>Роль</th>
+    </tr>
+    <tr th:each="person : ${user}">
+        <td th:text="${person.name}"></td>
+        <td th:text="${person.surname}"></td>
+        <td th:text="${person.department}"></td>
+        <td th:text="${person.salary}"></td>
+        <td th:each="r : ${person.roles}" th:text="${r.role}"></td>
+    </tr>
+</table>
+<br>
+<br>
+<br>
+
+<input type="button" value="На главную" onclick="window.location.href = '/index'"/>
+</body>
+</html>

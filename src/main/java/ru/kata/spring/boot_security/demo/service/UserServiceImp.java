@@ -1,0 +1,66 @@
+package ru.kata.spring.boot_security.demo.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.kata.spring.boot_security.demo.dao.RoleDao;
+import ru.kata.spring.boot_security.demo.dao.UserDao;
+import ru.kata.spring.boot_security.demo.model.Role;
+import ru.kata.spring.boot_security.demo.model.User;
+
+import java.util.List;
+import java.util.Set;
+
+@Service
+public class UserServiceImp implements UserService {
+
+    private final RoleDao roleDao;
+    private final UserDao userDao;
+
+    @Autowired
+    public UserServiceImp(RoleDao roleDao, UserDao userDao) {
+        this.roleDao = roleDao;
+        this.userDao = userDao;
+    }
+
+    @Override
+    @Transactional
+    public List<User> getAllUsers() {
+        return userDao.getAllUsers();
+    }
+
+    @Override
+    @Transactional
+    public void saveUser(User user) {
+        userDao.saveUser(user);
+    }
+
+    @Override
+    @Transactional
+    public User getUser(long id) {
+        return userDao.getUser(id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(long id) {
+        userDao.deleteUser(id);
+    }
+
+    @Override
+    @Transactional
+    public User getUserName(String name) {
+        return userDao.getUserName(name);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
+        return userDao.getUserName(name);
+    }
+
+    public Set<Role> getRoles() {
+        return Set.copyOf(roleDao.findAll());
+    }
+}
